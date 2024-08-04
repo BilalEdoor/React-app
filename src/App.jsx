@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Componants/Navbar.jsx'
 import Cards from './Componants/Cards.jsx'
+import { data } from 'autoprefixer';
 
 
   
 const App = () => {
+
+
+
   const productsCards = [
     {
       name: "Wireless Earbuds",
@@ -62,15 +66,38 @@ const App = () => {
     }
   ];
   
+const [data , setData] = useState([]);
 
+// useEffect(()=>{
+// const getTodos = ()=>{
+//   fetch("https://jsonplaceholder.typicode.com/posts" , 
+//   ).then(response => response.json())
+// .then((data) => setData(data));
 
-  return (
+// };
+
+// getTodos()} , [])
+useEffect(() => {
   
+
+  return () => {
+    const getTodos = async ()=>{
+     const res = await fetch("https://jsonplaceholder.typicode.com/posts" );
+     const data = await res.json();
+     setData(data);
+    }  
+    getTodos();
+  };
+}, []);
+
+console.log("data from backend" , data);
+
+
+return (
+
 <div>
 <Navbar/>
-
 <div className='flex items-center justify-center gap-5 flex-wrap'>
-
 {
   productsCards.map((product)=> {
     return(
@@ -80,6 +107,40 @@ const App = () => {
 }
 
 
+</div>
+<div className='flex items-center justify-center gap-5 flex-wrap mx-6 my-20'>
+  {
+    data.map((todo) =>{
+      
+        return
+      ( <div className='w-72 mt-5 p-3 bg-[#eeeeee] rounded-lg shadow-xl'>
+           <div className='flex items-center gap-4 flex-col'>
+            <span>
+              {" "}
+              <span className='font-bold'>title:</span> {todo.title}
+            </span>
+            <span>
+              {
+                todo.comleted ? (
+                  <span className='bg-gray-500 rounded-lg px-3 py-1 text-white'> 
+                    done
+                  </span>
+                ):(
+                  <span className='bg-red-500 rounded-lg px-3 py-3 text-white'>
+                    not completed
+                  </span>
+                )
+              }
+            </span>
+           
+           </div>
+       </div>); 
+      }
+    
+  )
+   
+    }
+  
 </div>
 
 </div>
